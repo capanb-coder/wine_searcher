@@ -1,9 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
 
-const client = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY
-});
-
 const SYSTEM_PROMPT = `Eres un sumiller de clase mundial y experto en vinos con conocimiento enciclopédico de vinos de todas las regiones del mundo.
 Cuando se te proporcione el nombre de un vino, debes devolver información completa y precisa en formato JSON.
 Incluye puntuaciones reales de publicaciones reconocidas cuando las conozcas: Wine Spectator, Wine Advocate (Robert Parker/Luis Gutiérrez),
@@ -11,6 +7,9 @@ Decanter, Guía Peñín, Wine Enthusiast, James Suckling, Falstaff, entre otras.
 Siempre devuelve JSON válido sin texto adicional fuera del objeto JSON.`;
 
 export async function getWineInfo(wineName) {
+  // Client created here so dotenv has already loaded the API key
+  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
   const response = await client.messages.create({
     model: 'claude-opus-4-6',
     max_tokens: 4096,
